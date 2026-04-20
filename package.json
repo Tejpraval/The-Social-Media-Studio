@@ -1,0 +1,21 @@
+{
+  "name": "creatoros",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CreatorOS - AI-assisted social creative studio built with the MERN stack.",
+  "scripts": {
+    "dev": "concurrently \"npm:dev --workspace server\" \"npm:dev --workspace client\"",
+    "build": "npm run build --workspace client",
+    "start": "npm run start --workspace server",
+    "lint": "npm run lint --workspace client",
+    "seed": "npm run seed --workspace server"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "devDependencies": {}
+}

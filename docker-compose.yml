@@ -1,0 +1,11 @@
+services:
+  mongo:
+    image: mongo:7
+    container_name: creatoros-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - creatoros_mongo:/data/db
+
+volumes:
+  creatoros_mongo:
