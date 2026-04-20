@@ -18,7 +18,7 @@ function AccentGraphic({ slide }) {
 const SlidePreview = forwardRef(function SlidePreview({ slide, brand, format, active }, ref) {
   const colors = brand?.colors || ['#111827', '#f97316', '#14b8a6', '#f8fafc'];
   const style = {
-    '--ink': colors[0],
+    '--ink': slide.textColor || colors[0],
     '--accent': colors[1],
     '--support': colors[2],
     '--paper': colors[3],

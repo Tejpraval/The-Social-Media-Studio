@@ -2,7 +2,8 @@ const styleMap = {
   minimal: ['clean negative space', 'precise typography', 'quiet contrast'],
   bold: ['high contrast blocks', 'large editorial type', 'punchy geometric accents'],
   educational: ['diagram-first structure', 'clear hierarchy', 'friendly explanatory graphics'],
-  playful: ['bright shapes', 'warm illustrations', 'curious visual metaphors']
+  playful: ['bright shapes', 'warm illustrations', 'curious visual metaphors'],
+  viral: ['bold hook framing', 'high contrast editorial tension', 'scroll-stopping visual hierarchy']
 };
 
 const layoutSequence = ['title-heavy', 'split-text-image', 'infographic-style', 'quote-style'];

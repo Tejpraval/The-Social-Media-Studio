@@ -1,4 +1,4 @@
-import { Copy, Download, Image, Plus, RefreshCw, Save, Trash2 } from 'lucide-react';
+import { Copy, Download, GripVertical, Image, Plus, RefreshCw, Save, Sparkles, Trash2 } from 'lucide-react';
 import React, { useMemo, useRef, useState } from 'react';
 import { layouts, styles } from '../lib/format.js';
 import { exportSlide, exportZip } from '../lib/export.js';
@@ -17,6 +17,8 @@ export default function SlideEditor({
 }) {
   const refs = useRef([]);
   const [saving, setSaving] = useState(false);
+  const [dragIndex, setDragIndex] = useState(null);
+  const [exportState, setExportState] = useState('');
   const active = slides[activeIndex] || slides[0];
 
   const captionBundle = useMemo(() => {
@@ -26,6 +28,10 @@ export default function SlideEditor({
 
   function updateActive(patch) {
     setSlides(slides.map((slide, index) => index === activeIndex ? { ...slide, ...patch } : slide));
+  }
+
+  function updateAllStyle(style) {
+    setSlides(slides.map((slide) => ({ ...slide, visualTheme: style })));
   }
 
   async function save() {
@@ -64,8 +70,61 @@ export default function SlideEditor({
     setActiveIndex(slides.length);
   }
 
+  function reorderSlides(from, to) {
+    if (from === null || from === to) return;
+    const next = [...slides];
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved);
+    setSlides(next.map((slide, index) => ({ ...slide, index })));
+    setActiveIndex(to);
+    setDragIndex(null);
+  }
+
+  function smartAction(mode) {
+    const transforms = {
+      punchy: {
+        heading: active.heading.replace(/[.!?]*$/, '!'),
+        subtext: 'Sharper, faster, and built to stop the scroll.'
+      },
+      shorten: {
+        heading: active.heading.split(' ').slice(0, 8).join(' '),
+        subtext: active.subtext.split(' ').slice(0, 16).join(' ')
+      },
+      hook: {
+        heading: `Nobody tells you this: ${active.heading.toLowerCase()}`,
+        subtext: active.subtext
+      },
+      cta: {
+        heading: 'Try this on your next post',
+        subtext: 'Save the idea, apply the framework, and publish with one clear takeaway.'
+      }
+    };
+    updateActive(transforms[mode]);
+  }
+
+  async function exportOne() {
+    setExportState('Preparing your creative...');
+    await exportSlide(refs.current[activeIndex], `creatoros-slide-${activeIndex + 1}.png`);
+    setExportState('Your content is ready to post 🚀');
+    setTimeout(() => setExportState(''), 2200);
+  }
+
+  async function exportAll() {
+    setExportState('Preparing your creative...');
+    await exportZip(refs.current.filter(Boolean), project.title);
+    setExportState('Your content is ready to post 🚀');
+    setTimeout(() => setExportState(''), 2200);
+  }
+
   return (
     <div className="studio-grid">
+      {exportState && (
+        <div className="export-toast">
+          <Sparkles size={18} />
+          <span>{exportState}</span>
+        </div>
+      )}
+
       <aside className="slide-rail">
         <div className="rail-heading">
           <strong>Slides</strong>
@@ -76,30 +135,41 @@ export default function SlideEditor({
             key={slide._id || `${slide.heading}-${index}`}
             className={`thumb ${index === activeIndex ? 'selected' : ''}`}
             onClick={() => setActiveIndex(index)}
+            draggable
+            onDragStart={() => setDragIndex(index)}
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={() => reorderSlides(dragIndex, index)}
           >
+            <span className="drag-handle"><GripVertical size={14} /></span>
             <SlidePreview slide={slide} brand={brand} format={project.format} />
           </button>
         ))}
       </aside>
 
       <section className="canvas-stage">
-        <div className="top-toolbar">
+        <div className="top-toolbar floating-toolbar">
           <div className="segmented">
             {styles.map((style) => (
               <button
                 key={style}
                 className={active.visualTheme === style ? 'active' : ''}
-                onClick={() => updateActive({ visualTheme: style })}
+                onClick={() => updateAllStyle(style)}
               >
                 {style}
               </button>
             ))}
           </div>
+          <div className="quick-actions">
+            <button onClick={() => smartAction('punchy')}>Make more punchy</button>
+            <button onClick={() => smartAction('shorten')}>Shorten text</button>
+            <button onClick={() => smartAction('hook')}>Add storytelling hook</button>
+            <button onClick={() => smartAction('cta')}>Improve CTA</button>
+          </div>
           <div className="toolbar-actions">
             <button className="icon-text" onClick={() => onRegenerate(active)}><RefreshCw size={17} /> Regenerate</button>
             <button className="icon-text" onClick={save}><Save size={17} /> {saving ? 'Saving' : 'Save'}</button>
-            <button className="icon-btn" onClick={() => exportSlide(refs.current[activeIndex], `creatoros-slide-${activeIndex + 1}.png`)} title="Export slide" aria-label="Export slide"><Download size={18} /></button>
-            <button className="icon-btn" onClick={() => exportZip(refs.current.filter(Boolean), project.title)} title="Export carousel ZIP" aria-label="Export carousel ZIP"><Image size={18} /></button>
+            <button className="icon-btn" onClick={exportOne} title="Export slide" aria-label="Export slide"><Download size={18} /></button>
+            <button className="icon-btn" onClick={exportAll} title="Export carousel ZIP" aria-label="Export carousel ZIP"><Image size={18} /></button>
           </div>
         </div>
         <div className="preview-wrap">

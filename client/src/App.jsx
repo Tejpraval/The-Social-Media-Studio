@@ -6,6 +6,7 @@ import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Studio from './pages/Studio.jsx';
 import BrandSettings from './pages/BrandSettings.jsx';
+import DemoExperience from './pages/DemoExperience.jsx';
 import Shell from './components/Shell.jsx';
 
 function Protected({ children }) {
@@ -18,6 +19,7 @@ export default function App() {
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/demo" element={<DemoExperience />} />
         <Route
           path="/"
           element={

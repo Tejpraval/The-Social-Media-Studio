@@ -11,4 +11,4 @@ export const layouts = [
   { value: 'infographic-style', label: 'Infographic Style' }
 ];
 
-export const styles = ['minimal', 'bold', 'educational', 'playful'];
+export const styles = ['minimal', 'bold', 'educational', 'viral'];

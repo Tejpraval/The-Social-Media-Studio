@@ -15,6 +15,7 @@ const slideSchema = new mongoose.Schema(
     imagePrompt: { type: String, default: '' },
     imageUrl: { type: String, default: '' },
     background: { type: String, default: '' },
+    textColor: { type: String, default: '' },
     notes: { type: String, default: '' },
     meta: { type: mongoose.Schema.Types.Mixed, default: {} }
   },

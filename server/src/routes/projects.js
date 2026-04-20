@@ -21,7 +21,7 @@ projectRouter.use(requireAuth);
 const createSchema = z.object({
   roughIdea: z.string().min(8).max(1200),
   format: z.enum(['post', 'carousel', 'story']).default('carousel'),
-  style: z.enum(['minimal', 'bold', 'educational', 'playful']).default('educational')
+  style: z.enum(['minimal', 'bold', 'educational', 'playful', 'viral']).default('educational')
 });
 
 const slideUpdateSchema = z.object({
@@ -35,6 +35,7 @@ const slideUpdateSchema = z.object({
     imagePrompt: z.string().default(''),
     imageUrl: z.string().default(''),
     background: z.string().default(''),
+    textColor: z.string().default(''),
     notes: z.string().default(''),
     meta: z.record(z.any()).optional()
   }))

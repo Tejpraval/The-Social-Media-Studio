@@ -10,6 +10,8 @@ const starterIdeas = [
   'Teach beginner creators how to turn one insight into a carousel'
 ];
 
+const generationStages = ['Understanding idea...', 'Building narrative...', 'Designing slides...'];
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
@@ -18,6 +20,7 @@ export default function Dashboard() {
   const [style, setStyle] = useState('educational');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [stageIndex, setStageIndex] = useState(0);
 
   useEffect(() => {
     api('/api/projects').then((data) => setProjects(data.projects)).catch(() => {});
@@ -26,16 +29,22 @@ export default function Dashboard() {
   async function generate() {
     setLoading(true);
     setError('');
+    setStageIndex(0);
+    const stageTimer = setInterval(() => {
+      setStageIndex((index) => Math.min(index + 1, generationStages.length - 1));
+    }, 850);
     try {
       const data = await api('/api/projects/generate', {
         method: 'POST',
         body: { roughIdea, format, style }
       });
-      navigate(`/studio/${data.project._id}`);
+      setStageIndex(generationStages.length - 1);
+      setTimeout(() => navigate(`/studio/${data.project._id}`), 650);
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      clearInterval(stageTimer);
+      setTimeout(() => setLoading(false), 650);
     }
   }
 
@@ -50,6 +59,13 @@ export default function Dashboard() {
 
       <section className="generator-panel">
         <div className="idea-input">
+          {loading && (
+            <div className="generation-overlay">
+              <strong>{generationStages[stageIndex]}</strong>
+              <div className="loader-track"><span style={{ width: `${(stageIndex + 1) * 33.4}%` }} /></div>
+              <small>Revealing your creative system...</small>
+            </div>
+          )}
           <textarea value={roughIdea} onChange={(event) => setRoughIdea(event.target.value)} />
           <div className="chips">
             {starterIdeas.map((idea) => (

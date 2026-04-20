@@ -50,13 +50,25 @@ export default function Studio() {
     setSlides(slides.map((item) => item._id === slide._id ? data.slide : item));
   }
 
+  function fixActiveSlide() {
+    const active = slides[activeIndex];
+    setSlides(slides.map((slide, index) => index === activeIndex ? {
+      ...slide,
+      heading: active.heading.split(' ').slice(0, 8).join(' '),
+      subtext: active.subtext.split(' ').slice(0, 18).join(' '),
+      layoutType: active.layoutType === 'title-heavy' ? 'split-text-image' : active.layoutType
+    } : slide));
+    setStatus('Slide improved');
+    setTimeout(() => setStatus(''), 1800);
+  }
+
   if (!project || !brand) return <div className="loading">Loading studio...</div>;
 
   return (
     <div className="studio-page">
       <header className="studio-header">
         <div>
-          <p className="eyebrow">{project.format} · {project.style}</p>
+          <p className="eyebrow">{project.format} / {project.style}</p>
           <h1>{project.title}</h1>
         </div>
         <span className="save-status">{status}</span>
@@ -81,7 +93,7 @@ export default function Studio() {
       />
 
       <div className="studio-bottom">
-        <ScoreCard intelligence={project.intelligence} />
+        <ScoreCard intelligence={project.intelligence} onFix={fixActiveSlide} />
         <section className="caption-panel">
           <h3>Caption + Hashtags</h3>
           <p>{project.caption}</p>
