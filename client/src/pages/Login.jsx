@@ -62,8 +62,20 @@ export default function Login() {
             <ArrowRight size={16} />
             <span>Designed output</span>
           </div>
-          <div className={`live-carousel-preview login-preview-slide-${previewIndex + 1}`}>
-            <SlidePreview slide={activePreview} brand={demoBrand} format="carousel" active />
+          <div className="hero-visual-row">
+            <div className={`live-carousel-preview login-preview-slide-${previewIndex + 1}`}>
+              <SlidePreview slide={activePreview} brand={demoBrand} format="carousel" active />
+            </div>
+            <div className="stacked-preview" aria-hidden="true">
+              <div className="stack-card stack-card-one">
+                <span>Hook</span>
+                <strong>Turn messy ideas into designed carousels</strong>
+              </div>
+              <div className="stack-card stack-card-two">
+                <span>Output</span>
+                <strong>Narrative visuals export</strong>
+              </div>
+            </div>
           </div>
         </div>
         <div className="auth-copy">

@@ -944,16 +944,20 @@ p {
 /* Premium CreatorOS upgrade */
 .auth-page {
   background:
-    linear-gradient(120deg, rgba(20, 184, 166, .16), transparent 34%),
-    linear-gradient(315deg, rgba(249, 115, 22, .18), transparent 38%),
-    #070a0f;
+  radial-gradient(circle at 74% 88%, rgba(92, 50, 24, .72), transparent 36%),
+    radial-gradient(circle at 7% 10%, rgba(12, 91, 80, .78), transparent 34%),
+    radial-gradient(circle at 18% 82%, rgba(20, 45, 83, .62), transparent 42%),
+    
+    linear-gradient(135deg, #041513 0%, #070b12 46%, #20140d 100%);
 }
 
 .auth-hero {
   background:
-    radial-gradient(circle at 15% 12%, rgba(20, 184, 166, .22), transparent 28%),
-    radial-gradient(circle at 80% 72%, rgba(249, 115, 22, .18), transparent 30%),
-    #070a0f;
+  radial-gradient(circle at 78% 92%, rgba(95, 52, 24, .42), transparent 36%),
+    radial-gradient(circle at 12% 12%, rgba(15, 118, 110, .36), transparent 32%),
+    radial-gradient(circle at 25% 78%, rgba(30, 64, 115, .28), transparent 42%),
+    
+    linear-gradient(135deg, rgba(4, 21, 19, .96) 0%, rgba(7, 11, 18, .96) 48%, rgba(32, 20, 13, .96) 100%);
 }
 
 .auth-product-story {
@@ -1022,6 +1026,13 @@ p {
   font-weight: 800;
 }
 
+.hero-visual-row {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(260px, .78fr);
+  align-items: center;
+  gap: 18px;
+}
+
 .live-carousel-preview {
   display: grid;
   place-items: center;
@@ -1056,6 +1067,77 @@ p {
 
 .login-preview-slide-3 .visual-orbit {
   width: 170px;
+}
+
+.stacked-preview {
+  position: relative;
+  min-height: 270px;
+  width: min(400px, 100%);
+  justify-self: start;
+}
+
+.stack-card {
+  position: absolute;
+  width: 220px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .32);
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+
+.stacked-preview:hover .stack-card-one {
+  transform: translate(-4px, -4px) rotate(-1deg);
+}
+
+.stacked-preview:hover .stack-card-two {
+  transform: translate(5px, -7px) rotate(1deg);
+}
+
+.stack-card span {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, .7);
+}
+
+.stack-card strong {
+  margin-top: 8px;
+  font-size: 23px;
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.stack-card-one {
+  left: 0;
+  bottom: 30px;
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(8, 13, 24, .18), rgba(8, 13, 24, .78) 76%),
+    radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .22), transparent 23%),
+    linear-gradient(135deg, #f97316, #111827 72%);
+}
+
+.stack-card-two {
+  right: 0;
+  top: 8px;
+  color: #07111f;
+  background:
+    linear-gradient(135deg, #f8fafc 0 42%, #14b8a6 42% 66%, #07111f 66%);
+}
+
+.stack-card-two span {
+  color: #334155;
+}
+
+.stack-card-two strong {
+  max-width: 9ch;
+  color: #07111f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
 }
 
 @keyframes previewReveal {
@@ -1398,6 +1480,20 @@ select:focus {
 
   .live-carousel-preview .slide-canvas {
     width: min(320px, 84vw);
+  }
+
+  .hero-visual-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stacked-preview {
+    min-height: 210px;
+    width: min(330px, 90vw);
+    justify-self: center;
+  }
+
+  .stack-card {
+    width: 180px;
   }
 
   .demo-header {
