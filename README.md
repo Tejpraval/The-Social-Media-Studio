@@ -75,14 +75,3 @@ Environment variables:
 
 - `VITE_API_URL=https://your-backend-url`
 
-## Production Notes
-
-- No API keys are used in the frontend.
-- All generation routes are authenticated.
-- Auth cookies are avoided for easier cross-platform deployment; the frontend stores only the JWT.
-- MongoDB models are normalized into Users, Projects, Slides, and BrandProfiles.
-- Export is client-side to keep the backend lightweight and fast.
-
-## Public URL
-
-This workspace cannot create a live public URL without your Vercel/Render/Railway credentials. The app is deployment-ready; after you connect those accounts and set the environment variables above, the generated public URLs can be added here.
