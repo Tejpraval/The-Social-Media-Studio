@@ -52,7 +52,10 @@ Environment variables:
 - `MONGO_URI`
 - `JWT_SECRET`
 - `CLIENT_URL`
-- optional `OPENAI_API_KEY`
+- `CLIENT_URLS`
+- `GOOGLE_AI_API_KEY`
+- `GOOGLE_TEXT_MODEL`
+- `GOOGLE_IMAGE_MODEL`
 - optional `IMAGE_API_KEY`
 
 ### Frontend: Vercel
@@ -74,4 +77,5 @@ dist
 Environment variables:
 
 - `VITE_API_URL=https://your-backend-url`
+- `VITE_API_VERSION=v1`
 

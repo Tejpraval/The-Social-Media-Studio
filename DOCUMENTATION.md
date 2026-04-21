@@ -172,10 +172,17 @@ Base URL in production:
 https://the-social-media-studio.onrender.com
 ```
 
+Current API version:
+
+```text
+v1
+```
+
 Frontend environment variable:
 
 ```env
 VITE_API_URL=https://the-social-media-studio.onrender.com
+VITE_API_VERSION=v1
 ```
 
 Important: do not add `/api` to `VITE_API_URL`, because the frontend already calls routes such as `/api/auth/login`.
@@ -195,12 +202,41 @@ Returns:
 }
 ```
 
+### Platform Status
+
+```http
+GET /api/v1/status
+```
+
+Returns platform metadata for web and future mobile clients:
+
+```json
+{
+  "ok": true,
+  "platform": {
+    "name": "CreatorOS",
+    "apiVersion": "v1",
+    "clients": ["web", "mobile-ready"],
+    "ai": {
+      "provider": "google-gemini",
+      "fallbackEngine": true
+    }
+  }
+}
+```
+
+Legacy status route also exists:
+
+```http
+GET /api/status
+```
+
 ### Auth Routes
 
 Base path:
 
 ```text
-/api/auth
+/api/v1/auth
 ```
 
 #### Register
@@ -266,7 +302,7 @@ Authorization: Bearer <token>
 Base path:
 
 ```text
-/api/brand
+/api/v1/brand
 ```
 
 All brand routes require JWT authentication.
@@ -305,8 +341,10 @@ Body:
 Base path:
 
 ```text
-/api/projects
+/api/v1/projects
 ```
+
+Legacy `/api/auth`, `/api/brand`, and `/api/projects` routes are still supported for backward compatibility.
 
 All project routes require JWT authentication.
 
@@ -599,6 +637,7 @@ PORT=8081
 MONGO_URI=mongodb://127.0.0.1:27017/creatoros
 JWT_SECRET=creatoros-local-dev-secret-change-before-production
 CLIENT_URL=http://localhost:5174
+CLIENT_URLS=http://localhost:5174
 GOOGLE_AI_API_KEY=your-google-ai-studio-key
 GOOGLE_TEXT_MODEL=gemini-2.5-flash-lite
 GOOGLE_IMAGE_MODEL=gemini-2.5-flash-image
@@ -619,6 +658,7 @@ Example:
 
 ```env
 VITE_API_URL=http://localhost:8081
+VITE_API_VERSION=v1
 ```
 
 ### Render Backend Production
@@ -629,6 +669,7 @@ Set these in the Render dashboard:
 MONGO_URI=your-mongodb-atlas-url
 JWT_SECRET=long-random-production-secret
 CLIENT_URL=https://the-social-media-studio-client.vercel.app
+CLIENT_URLS=https://the-social-media-studio-client.vercel.app
 GOOGLE_AI_API_KEY=your-rotated-google-ai-studio-key
 GOOGLE_TEXT_MODEL=gemini-2.5-flash-lite
 GOOGLE_IMAGE_MODEL=gemini-2.5-flash-image
@@ -643,6 +684,7 @@ Set this in the Vercel dashboard:
 
 ```env
 VITE_API_URL=https://the-social-media-studio.onrender.com
+VITE_API_VERSION=v1
 ```
 
 Do not add `/api` at the end.
@@ -668,6 +710,16 @@ VITE_API_URL=https://the-social-media-studio.onrender.com/api
 - Helmet is enabled for security headers.
 - Rate limiting is enabled.
 - CORS allows the configured frontend URL.
+- `CLIENT_URLS` supports multiple comma-separated web/mobile origins.
+
+## Platform-Ready Conventions
+
+- API routes are versioned under `/api/v1`.
+- Legacy `/api` routes remain available to avoid breaking deployed clients.
+- `/api/v1/status` exposes app capabilities for future mobile clients.
+- The frontend API client uses `VITE_API_VERSION`, so clients can move to future API versions without changing every call site.
+- The web app includes a manifest and icon, making it PWA/mobile-wrapper ready.
+- AI provider details are isolated in backend services instead of frontend code.
 
 Important:
 
