@@ -25,7 +25,10 @@ function inferTone(idea, brand) {
   if (brand?.toneOfVoice) return brand.toneOfVoice;
   if (idea.toLowerCase().includes('kids')) return 'simple, encouraging, educational';
   return 'clear, engaging, practical';
-}
+} 
+
+
+
 
 export function generateNarrative(idea, brand) {
   const cleanIdea = idea.trim();
